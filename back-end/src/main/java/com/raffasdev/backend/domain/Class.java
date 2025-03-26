@@ -1,26 +1,23 @@
 package com.raffasdev.backend.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
+import java.time.LocalDate;
 
 @Entity
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Student {
+@Data
+public class Class {
 
     @Id
+    @Column(columnDefinition = "DATE")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    private LocalDate date;
 
-    private String name;
 }
