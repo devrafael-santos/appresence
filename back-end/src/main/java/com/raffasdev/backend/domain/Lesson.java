@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Builder
 @Data
-public class Class {
+public class Lesson {
 
     @Id
     @Column(columnDefinition = "DATE")

@@ -1,7 +1,7 @@
 package com.raffasdev.backend.controller;
 
 import com.raffasdev.backend.domain.Attendance;
-import com.raffasdev.backend.domain.Class;
+import com.raffasdev.backend.domain.Lesson;
 import com.raffasdev.backend.domain.Student;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +23,7 @@ public class StudentController {
         students.add(new Student(UUID.randomUUID(), "John Doe1"));
         students.add(new Student(UUID.randomUUID(), "John Doe2"));
 
-        Class class_ = Class.builder().date(LocalDate.now()).build();
+        Lesson class_ = Lesson.builder().date(LocalDate.now()).build();
 
         Attendance attendance = new Attendance(class_, students.get(0), false);
         Attendance attendance1 = new Attendance(class_, students.get(1), true);

@@ -11,11 +11,11 @@ import java.util.UUID;
 @Embeddable
 @NoArgsConstructor
 public class AttendanceId implements Serializable {
-    private LocalDate classDate;
+    private LocalDate lessonDate;
     private UUID studentId;
 
-    public AttendanceId(LocalDate classDate, UUID studentId) {
-        this.classDate = classDate;
+    public AttendanceId(LocalDate lessonDate, UUID studentId) {
+        this.lessonDate = lessonDate;
         this.studentId = studentId;
     }
 
@@ -25,11 +25,11 @@ public class AttendanceId implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
 
         AttendanceId that = (AttendanceId) o;
-        return Objects.equals(classDate, that.classDate) && Objects.equals(studentId, that.studentId);
+        return Objects.equals(lessonDate, that.lessonDate) && Objects.equals(studentId, that.studentId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(classDate, studentId);
+        return Objects.hash(lessonDate, studentId);
     }
 }
