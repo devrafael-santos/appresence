@@ -16,8 +16,6 @@ import java.time.LocalDate;
 public class Lesson {
 
     @Id
-    @Column(columnDefinition = "DATE")
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private LocalDate date;
 
 }
