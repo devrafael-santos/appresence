@@ -21,15 +21,15 @@ public class Attendance {
     private Student student;
 
     @ManyToOne
-    @MapsId("classDate")
-    @JoinColumn(name = "class_date")
-    private Class class_;
+    @MapsId("lessonDate")
+    @JoinColumn(name = "lesson_date")
+    private Lesson lesson;
 
     private boolean present;
 
-    public Attendance(Class class_, Student student, boolean present) {
-        this.id = new AttendanceId(class_.getDate(), student.getId());
-        this.class_ = class_;
+    public Attendance(Lesson lesson, Student student, boolean present) {
+        this.id = new AttendanceId(lesson.getDate(), student.getId());
+        this.lesson = lesson;
         this.student = student;
         this.present = present;
     }
