@@ -1,37 +1,26 @@
 package com.raffasdev.backend.controller;
 
-import com.raffasdev.backend.domain.Attendance;
-import com.raffasdev.backend.domain.Lesson;
 import com.raffasdev.backend.domain.Student;
+import com.raffasdev.backend.service.StudentService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @RestController()
+@RequiredArgsConstructor
 @RequestMapping("/students")
 public class StudentController {
+    private final StudentService studentService;
 
-    @GetMapping()
-    public List<Attendance> getStudents() {
+    @GetMapping("/{id}")
+    public ResponseEntity<Student> findById(@PathVariable UUID id) {
 
-        List<Student> students = new ArrayList<>();
-        students.add(new Student(UUID.randomUUID(), "John Doe1"));
-        students.add(new Student(UUID.randomUUID(), "John Doe2"));
-
-        Lesson class_ = Lesson.builder().date(LocalDate.now()).build();
-
-        Attendance attendance = new Attendance(class_, students.get(0), false);
-        Attendance attendance1 = new Attendance(class_, students.get(1), true);
-
-        List<Attendance> attendances = new ArrayList<>();
-        attendances.add(attendance);
-        attendances.add(attendance1);
-
-        return attendances;
+        return new ResponseEntity<>(studentService.findByIdOrThrowBadRequestException(id), HttpStatus.OK);
     }
 }
