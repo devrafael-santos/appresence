@@ -4,6 +4,7 @@ import com.raffasdev.backend.domain.Student;
 import com.raffasdev.backend.request.StudentPostRequestBody;
 import com.raffasdev.backend.service.StudentService;
 import com.raffasdev.backend.util.StudentCreator;
+import com.raffasdev.backend.util.StudentPostRequestBodyCreator;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -45,6 +46,17 @@ class StudentControllerTest {
         Assertions.assertThat(student).isNotNull();
 
         Assertions.assertThat(student.getId()).isNotNull().isEqualTo(expectedId);
+    }
+
+    @Test
+    @DisplayName("createStudent returns a Student when successful")
+    void createStudent_ReturnsStudent_WhenSuccessful() {
+
+        Student student = studentController.createStudent(StudentPostRequestBodyCreator.createProductPostRequestBody()).getBody();
+
+        Assertions.assertThat(student).isNotNull();
+
+        Assertions.assertThat(student.getName()).isNotNull().isEqualTo(StudentCreator.createValidStudent().getName());
     }
 
 }
