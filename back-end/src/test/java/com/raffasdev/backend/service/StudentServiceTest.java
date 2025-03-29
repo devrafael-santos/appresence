@@ -4,6 +4,7 @@ import com.raffasdev.backend.domain.Student;
 import com.raffasdev.backend.exception.BadRequestException;
 import com.raffasdev.backend.repository.StudentRepository;
 import com.raffasdev.backend.util.StudentCreator;
+import com.raffasdev.backend.util.StudentPostRequestBodyCreator;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -14,6 +15,7 @@ import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -31,6 +33,9 @@ class StudentServiceTest {
     public void setUp() {
         BDDMockito.when(studentRepository.findById(ArgumentMatchers.any()))
                 .thenReturn(Optional.of(StudentCreator.createValidStudent()));
+
+        BDDMockito.when(studentRepository.save(ArgumentMatchers.any(Student.class)))
+                .thenReturn(StudentCreator.createValidStudent());
     }
 
     @Test
@@ -52,6 +57,14 @@ class StudentServiceTest {
 
         Assertions.assertThatThrownBy(() -> studentService.findByIdOrThrowBadRequestException(UUID.randomUUID()))
                 .isInstanceOf(BadRequestException.class);
+    }
+
+    @Test
+    @DisplayName("createStudent creates a Student when successful")
+    public void createStudent_CreatesStudent_WhenSuccessful() {
+        Student student = studentService.createStudent(StudentPostRequestBodyCreator.createValidStudentPostRequestBody());
+
+        Assertions.assertThat(student).isNotNull().isEqualTo(StudentCreator.createValidStudent());
     }
 
 }
