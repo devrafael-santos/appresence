@@ -7,6 +7,7 @@ import com.raffasdev.backend.repository.StudentRepository;
 import com.raffasdev.backend.request.StudentPostRequestBody;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -21,6 +22,7 @@ public class StudentService {
                 .orElseThrow(() -> new BadRequestException("Student not found"));
     }
 
+    @Transactional
     public Student createStudent(StudentPostRequestBody studentPostRequestBody) {
         return studentRepository.save(StudentMapper.INSTANCE.toStudent(studentPostRequestBody));
     }

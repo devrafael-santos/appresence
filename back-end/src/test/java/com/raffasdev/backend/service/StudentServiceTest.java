@@ -62,7 +62,7 @@ class StudentServiceTest {
     @Test
     @DisplayName("createStudent creates a Student when successful")
     public void createStudent_CreatesStudent_WhenSuccessful() {
-        Student student = studentService.createStudent(StudentPostRequestBodyCreator.createValidStudentPostRequestBody());
+        Student student = studentService.createStudent(StudentPostRequestBodyCreator.createProductPostRequestBody());
 
         Assertions.assertThat(student).isNotNull().isEqualTo(StudentCreator.createValidStudent());
     }

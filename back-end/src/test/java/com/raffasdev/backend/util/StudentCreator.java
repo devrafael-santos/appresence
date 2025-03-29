@@ -11,4 +11,8 @@ public class StudentCreator {
     public static Student createValidStudent() {
         return Student.builder().id(id).name("Teste").build();
     }
+
+    public static Student createValidStudentToBeSaved() {
+        return Student.builder().name("Teste").build();
+    }
 }

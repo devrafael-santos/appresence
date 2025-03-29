@@ -1,14 +1,13 @@
 package com.raffasdev.backend.controller;
 
 import com.raffasdev.backend.domain.Student;
+import com.raffasdev.backend.request.StudentPostRequestBody;
 import com.raffasdev.backend.service.StudentService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -20,7 +19,11 @@ public class StudentController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Student> findById(@PathVariable UUID id) {
-
         return new ResponseEntity<>(studentService.findByIdOrThrowBadRequestException(id), HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<Student> createStudent(@RequestBody @Valid StudentPostRequestBody studentPostRequestBody) {
+        return new ResponseEntity<>(studentService.createStudent(studentPostRequestBody), HttpStatus.CREATED);
     }
 }
