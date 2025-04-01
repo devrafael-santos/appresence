@@ -2,6 +2,7 @@ package com.raffasdev.backend.controller;
 
 import com.raffasdev.backend.domain.Student;
 import com.raffasdev.backend.request.StudentPostRequestBody;
+import com.raffasdev.backend.request.StudentPutRequestBody;
 import com.raffasdev.backend.service.StudentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,5 +26,12 @@ public class StudentController {
     @PostMapping
     public ResponseEntity<Student> createStudent(@RequestBody @Valid StudentPostRequestBody studentPostRequestBody) {
         return new ResponseEntity<>(studentService.createStudent(studentPostRequestBody), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateStudent(@PathVariable UUID id,
+                                                 @RequestBody @Valid StudentPutRequestBody studentPutRequestBody) {
+        studentService.updateStudent(id, studentPutRequestBody);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

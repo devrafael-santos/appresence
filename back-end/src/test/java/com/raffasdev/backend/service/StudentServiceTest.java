@@ -3,8 +3,10 @@ package com.raffasdev.backend.service;
 import com.raffasdev.backend.domain.Student;
 import com.raffasdev.backend.exception.BadRequestException;
 import com.raffasdev.backend.repository.StudentRepository;
+import com.raffasdev.backend.request.StudentPutRequestBody;
 import com.raffasdev.backend.util.StudentCreator;
 import com.raffasdev.backend.util.StudentPostRequestBodyCreator;
+import com.raffasdev.backend.util.StudentPutRequestBodyCreator;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -30,7 +32,7 @@ class StudentServiceTest {
     private StudentRepository studentRepository;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         BDDMockito.when(studentRepository.findById(ArgumentMatchers.any()))
                 .thenReturn(Optional.of(StudentCreator.createValidStudent()));
 
@@ -40,7 +42,7 @@ class StudentServiceTest {
 
     @Test
     @DisplayName("findByIdOrThrowBadRequestException returns a Student when successful")
-    public void findByIdOrThrowBadRequestException_ReturnsStudent_WhenSuccessful() {
+    void findByIdOrThrowBadRequestException_ReturnsStudent_WhenSuccessful() {
         UUID expectedId = StudentCreator.createValidStudent().getId();
 
         Student foundStudent = studentService.findByIdOrThrowBadRequestException(UUID.randomUUID());
@@ -51,7 +53,7 @@ class StudentServiceTest {
 
     @Test
     @DisplayName("findByIdOrThrowBadRequestException throws BadRequestException when Student is not found")
-    public void findByIdOrThrowBadRequestException_ThrowsBadRequestException_WhenStudentIsNotFound() {
+    void findByIdOrThrowBadRequestException_ThrowsBadRequestException_WhenStudentIsNotFound() {
         BDDMockito.when(studentRepository.findById(ArgumentMatchers.any()))
                 .thenReturn(Optional.empty());
 
@@ -61,10 +63,29 @@ class StudentServiceTest {
 
     @Test
     @DisplayName("createStudent creates a Student when successful")
-    public void createStudent_CreatesStudent_WhenSuccessful() {
+    void createStudent_CreatesStudent_WhenSuccessful() {
         Student student = studentService.createStudent(StudentPostRequestBodyCreator.createProductPostRequestBody());
 
         Assertions.assertThat(student).isNotNull().isEqualTo(StudentCreator.createValidStudent());
+    }
+
+    @Test
+    @DisplayName("updateStudent updates a Student when successful")
+    void updateStudent_UpdatesStudent_WhenSuccessful() {
+        Assertions.assertThatCode(() -> studentService.updateStudent(UUID.randomUUID(),
+                StudentPutRequestBodyCreator.createStudentPutRequestBody()))
+                .doesNotThrowAnyException();
+    }
+
+    @Test
+    @DisplayName("updateStudent throws BadRequestException when Student is not found")
+    void updateStudent_ThrowsBadRequestException_WhenStudentIsNotFound() {
+        BDDMockito.when(studentRepository.findById(ArgumentMatchers.any()))
+                        .thenReturn(Optional.empty());
+
+        Assertions.assertThatThrownBy(() -> studentService.updateStudent(UUID.randomUUID(),
+                        StudentPutRequestBodyCreator.createStudentPutRequestBody()))
+                .isInstanceOf(BadRequestException.class);
     }
 
 }

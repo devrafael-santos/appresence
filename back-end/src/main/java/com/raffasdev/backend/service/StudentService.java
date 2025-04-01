@@ -5,6 +5,7 @@ import com.raffasdev.backend.exception.BadRequestException;
 import com.raffasdev.backend.mapper.StudentMapper;
 import com.raffasdev.backend.repository.StudentRepository;
 import com.raffasdev.backend.request.StudentPostRequestBody;
+import com.raffasdev.backend.request.StudentPutRequestBody;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,5 +26,15 @@ public class StudentService {
     @Transactional
     public Student createStudent(StudentPostRequestBody studentPostRequestBody) {
         return studentRepository.save(StudentMapper.INSTANCE.toStudent(studentPostRequestBody));
+    }
+
+    @Transactional
+    public void updateStudent(UUID uuid, StudentPutRequestBody studentPutRequestBody) {
+        Student savedStudent = findByIdOrThrowBadRequestException(uuid);
+
+        Student student = StudentMapper.INSTANCE.toStudent(studentPutRequestBody);
+        student.setId(savedStudent.getId());
+
+        studentRepository.save(student);
     }
 }
