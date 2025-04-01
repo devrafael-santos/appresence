@@ -3,7 +3,6 @@ package com.raffasdev.backend.service;
 import com.raffasdev.backend.domain.Student;
 import com.raffasdev.backend.exception.BadRequestException;
 import com.raffasdev.backend.repository.StudentRepository;
-import com.raffasdev.backend.request.StudentPutRequestBody;
 import com.raffasdev.backend.util.StudentCreator;
 import com.raffasdev.backend.util.StudentPostRequestBodyCreator;
 import com.raffasdev.backend.util.StudentPutRequestBodyCreator;
@@ -17,7 +16,6 @@ import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -87,5 +85,23 @@ class StudentServiceTest {
                         StudentPutRequestBodyCreator.createStudentPutRequestBody()))
                 .isInstanceOf(BadRequestException.class);
     }
+
+    @Test
+    @DisplayName("deleteStudent delete Student when successful")
+    void deleteStudent_DeleteStudent_WhenSuccessful() {
+        Assertions.assertThatCode(() -> studentService.deleteStudent(UUID.randomUUID()))
+                .doesNotThrowAnyException();
+    }
+
+    @Test
+    @DisplayName("deleteStudent throws BadRequestException when Student is not found")
+    void deleteStudent_ThrowsBadRequestException_WhenStudentIsNotFound() {
+        BDDMockito.when(studentRepository.findById(ArgumentMatchers.any()))
+                .thenReturn(Optional.empty());
+
+        Assertions.assertThatThrownBy(() -> studentService.deleteStudent(UUID.randomUUID()))
+                .isInstanceOf(BadRequestException.class);
+    }
+
 
 }

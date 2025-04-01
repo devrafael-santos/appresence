@@ -37,4 +37,10 @@ public class StudentService {
 
         studentRepository.save(student);
     }
+
+    public void deleteStudent(UUID uuid) {
+        Student student = findByIdOrThrowBadRequestException(uuid);
+
+        studentRepository.delete(student);
+    }
 }
