@@ -52,7 +52,7 @@ class StudentServiceTest {
     void findAll_ReturnsPageObjectOfStudents_WhenSuccessful() {
         String expectedName = StudentCreator.createValidStudent().getName();
 
-        Page<Student> studentPage = studentService.findAll(PageRequest.of(1,1));
+        Page<Student> studentPage = studentService.findAll(PageRequest.of(1, 1));
 
         Assertions.assertThat(studentPage).isNotNull();
         Assertions.assertThat(studentPage.toList()).isNotEmpty().hasSize(1);
@@ -92,7 +92,7 @@ class StudentServiceTest {
     @DisplayName("updateStudent updates a Student when successful")
     void updateStudent_UpdatesStudent_WhenSuccessful() {
         Assertions.assertThatCode(() -> studentService.updateStudent(UUID.randomUUID(),
-                StudentPutRequestBodyCreator.createStudentPutRequestBody()))
+                        StudentPutRequestBodyCreator.createStudentPutRequestBody()))
                 .doesNotThrowAnyException();
     }
 
@@ -100,7 +100,7 @@ class StudentServiceTest {
     @DisplayName("updateStudent throws BadRequestException when Student is not found")
     void updateStudent_ThrowsBadRequestException_WhenStudentIsNotFound() {
         BDDMockito.when(studentRepository.findById(ArgumentMatchers.any()))
-                        .thenReturn(Optional.empty());
+                .thenReturn(Optional.empty());
 
         Assertions.assertThatThrownBy(() -> studentService.updateStudent(UUID.randomUUID(),
                         StudentPutRequestBodyCreator.createStudentPutRequestBody()))
