@@ -63,10 +63,19 @@ class StudentControllerTest {
     }
 
     @Test
-    @DisplayName("updateStudent updates a Student when succesfull")
+    @DisplayName("updateStudent updates a Student when successful")
     void updateStudent_UpdatesStudent_WhenSuccessful() {
         ResponseEntity<Void> entity = studentController.updateStudent(UUID.randomUUID(),
                 StudentPutRequestBodyCreator.createStudentPutRequestBody());
+
+        Assertions.assertThat(entity).isNotNull();
+        Assertions.assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+    }
+
+    @Test
+    @DisplayName("deleteStudent deletes a Student when successful")
+    void deleteStudent_DeleteStudent_WhenSuccessful() {
+        ResponseEntity<Void> entity = studentController.deleteStudent(UUID.randomUUID());
 
         Assertions.assertThat(entity).isNotNull();
         Assertions.assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);

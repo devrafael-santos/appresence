@@ -87,7 +87,7 @@ class StudentServiceTest {
     }
 
     @Test
-    @DisplayName("deleteStudent delete Student when successful")
+    @DisplayName("deleteStudent deletes Student when successful")
     void deleteStudent_DeleteStudent_WhenSuccessful() {
         Assertions.assertThatCode(() -> studentService.deleteStudent(UUID.randomUUID()))
                 .doesNotThrowAnyException();
