@@ -5,6 +5,7 @@ import com.raffasdev.backend.request.StudentPostRequestBody;
 import com.raffasdev.backend.service.StudentService;
 import com.raffasdev.backend.util.StudentCreator;
 import com.raffasdev.backend.util.StudentPostRequestBodyCreator;
+import com.raffasdev.backend.util.StudentPutRequestBodyCreator;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -14,6 +15,8 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.UUID;
@@ -57,6 +60,16 @@ class StudentControllerTest {
         Assertions.assertThat(student).isNotNull();
 
         Assertions.assertThat(student.getName()).isNotNull().isEqualTo(StudentCreator.createValidStudent().getName());
+    }
+
+    @Test
+    @DisplayName("updateStudent updates a Student when succesfull")
+    void updateStudent_UpdatesStudent_WhenSuccessful() {
+        ResponseEntity<Void> entity = studentController.updateStudent(UUID.randomUUID(),
+                StudentPutRequestBodyCreator.createStudentPutRequestBody());
+
+        Assertions.assertThat(entity).isNotNull();
+        Assertions.assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
     }
 
 }
