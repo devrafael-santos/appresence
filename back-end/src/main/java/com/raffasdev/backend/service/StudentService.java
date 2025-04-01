@@ -7,6 +7,9 @@ import com.raffasdev.backend.repository.StudentRepository;
 import com.raffasdev.backend.request.StudentPostRequestBody;
 import com.raffasdev.backend.request.StudentPutRequestBody;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +21,9 @@ public class StudentService {
 
     private final StudentRepository studentRepository;
 
+    public Page<Student> findAll(Pageable pageable) {
+        return studentRepository.findAll(pageable);
+    }
     public Student findByIdOrThrowBadRequestException(UUID uuid) {
         return studentRepository.findById(uuid)
                 .orElseThrow(() -> new BadRequestException("Student not found"));
@@ -43,4 +49,5 @@ public class StudentService {
 
         studentRepository.delete(student);
     }
+
 }
