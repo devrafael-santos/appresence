@@ -1,37 +1,50 @@
 package com.raffasdev.backend.controller;
 
-import com.raffasdev.backend.domain.Attendance;
-import com.raffasdev.backend.domain.Lesson;
 import com.raffasdev.backend.domain.Student;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.raffasdev.backend.request.StudentPostRequestBody;
+import com.raffasdev.backend.request.StudentPutRequestBody;
+import com.raffasdev.backend.service.StudentService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @RestController()
+@RequiredArgsConstructor
 @RequestMapping("/students")
 public class StudentController {
+    private final StudentService studentService;
 
-    @GetMapping()
-    public List<Attendance> getStudents() {
+    @GetMapping
+    public ResponseEntity<Page<Student>> findAll(Pageable pageable) {
+        return ResponseEntity.ok(studentService.findAll(pageable));
+    }
 
-        List<Student> students = new ArrayList<>();
-        students.add(new Student(UUID.randomUUID(), "John Doe1"));
-        students.add(new Student(UUID.randomUUID(), "John Doe2"));
+    @GetMapping("/{id}")
+    public ResponseEntity<Student> findById(@PathVariable UUID id) {
+        return new ResponseEntity<>(studentService.findByIdOrThrowBadRequestException(id), HttpStatus.OK);
+    }
 
-        Lesson class_ = Lesson.builder().date(LocalDate.now()).build();
+    @PostMapping
+    public ResponseEntity<Student> createStudent(@RequestBody @Valid StudentPostRequestBody studentPostRequestBody) {
+        return new ResponseEntity<>(studentService.createStudent(studentPostRequestBody), HttpStatus.CREATED);
+    }
 
-        Attendance attendance = new Attendance(class_, students.get(0), false);
-        Attendance attendance1 = new Attendance(class_, students.get(1), true);
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateStudent(@PathVariable UUID id,
+                                              @RequestBody @Valid StudentPutRequestBody studentPutRequestBody) {
+        studentService.updateStudent(id, studentPutRequestBody);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 
-        List<Attendance> attendances = new ArrayList<>();
-        attendances.add(attendance);
-        attendances.add(attendance1);
-
-        return attendances;
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteStudent(@PathVariable UUID id) {
+        studentService.deleteStudent(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

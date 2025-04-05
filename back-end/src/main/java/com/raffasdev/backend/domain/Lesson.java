@@ -1,6 +1,7 @@
 package com.raffasdev.backend.domain;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,8 +17,6 @@ import java.time.LocalDate;
 public class Lesson {
 
     @Id
-    @Column(columnDefinition = "DATE")
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private LocalDate date;
 
 }
