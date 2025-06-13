@@ -1,11 +1,27 @@
 services:
   db:
-    container_name: postgres_container
+    container_name: appresence_pg_local
     image: postgres
+    env_file:
+      - .env.dev.local
     environment:
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: root
-      POSTGRES_DB: appresence
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - "5432:5432"
     restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - monitoria_network
+
+volumes:
+  postgres_data:
+    driver: local
+  pgadmin_data:
+    driver: local
+
+networks:
+  monitoria_network:
+    driver: bridge
